@@ -57,7 +57,7 @@ The following diagnostic, forensics, and screen sharing tools are included in th
 ## Installation
 
 1. **Download the Tool**:
-   - Download the latest release from the [releases page](https://github.com/forensicanalysistools/Checking-tool/releases/tag/1.0).
+   - Download the latest release from the [releases page](https://github.com/thcjackk/Checking-Tool/releases/tag/1.0).
    
 2. **Run the Setup**:
    - Execute the setup file to install the PC Check & Screen Sharing Tool on your system.
@@ -87,7 +87,7 @@ The following diagnostic, forensics, and screen sharing tools are included in th
 
 ## Support
 
-For issues or questions, please open an issue on the [GitHub issues page](https://github.com/forensicanalysistools/Checking-tool/issues), or contact support at @thcjackk on Discord.
+For issues or questions, please open an issue on the [GitHub issues page](https://github.com/thcjackk/Checking-Tool/issues), or contact support at @thcjackk on Discord.
 
 ---
 
