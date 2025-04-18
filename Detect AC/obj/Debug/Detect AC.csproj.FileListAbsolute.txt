@@ -1,0 +1,7 @@
+C:\Users\runni\Documents\Axios\Checking-Tool\Detect AC\bin\Debug\Detect AC.exe.config
+C:\Users\runni\Documents\Axios\Checking-Tool\Detect AC\bin\Debug\Detect AC.exe
+C:\Users\runni\Documents\Axios\Checking-Tool\Detect AC\bin\Debug\Detect AC.pdb
+C:\Users\runni\Documents\Axios\Checking-Tool\Detect AC\obj\Debug\Detect AC.csproj.AssemblyReference.cache
+C:\Users\runni\Documents\Axios\Checking-Tool\Detect AC\obj\Debug\Detect AC.csproj.CoreCompileInputs.cache
+C:\Users\runni\Documents\Axios\Checking-Tool\Detect AC\obj\Debug\Detect AC.exe
+C:\Users\runni\Documents\Axios\Checking-Tool\Detect AC\obj\Debug\Detect AC.pdb

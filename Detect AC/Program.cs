@@ -46,6 +46,7 @@ namespace Detect_AC
             Banner();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Note: Make sure to create a folder in the desktop with the name 'Checker'.");
+            Console.WriteLine("It is recommended to use the option to install all .Net Frameworks before running the tools.");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("\n[1] NirSoft Tools");
@@ -61,7 +62,8 @@ namespace Detect_AC
             Console.WriteLine("[11] OsForensics");
             Console.WriteLine("[12] System Informer");
             Console.WriteLine("[13] Echo Journal");
-            Console.WriteLine("[14] Exit");
+            Console.WriteLine("[14] Install All .Net Frameworks");
+            Console.WriteLine("[15] Exit");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("\nSelect an option: ");
@@ -109,6 +111,9 @@ namespace Detect_AC
                     EchoJournal();
                     break;
                 case "14":
+                    InstallAllNetFrameworks();
+                    break;
+                case "15":
                     Console.WriteLine("Exiting...");
                     Environment.Exit(0);
                     break;
@@ -118,6 +123,117 @@ namespace Detect_AC
                     break;
             }
         }
+
+        static void InstallAllNetFrameworks()
+        {
+            Console.Clear();
+            Banner();
+            Console.WriteLine("Checking if winget is installed...");
+            
+            // Check if winget is installed
+            try
+            {
+                ProcessStartInfo wingetCheck = new ProcessStartInfo
+                {
+                    FileName = "winget",
+                    Arguments = "--version",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (Process process = Process.Start(wingetCheck))
+                {
+                    string error = process.StandardError.ReadToEnd();
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Winget is not installed. Please install winget first.");
+                        Console.WriteLine("You can install winget from the Microsoft Store or by downloading the App Installer package.");
+                        Console.WriteLine("\nPress Enter to go back to the main menu...");
+                        Console.ReadLine();
+                        Menu();
+                        return;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Winget is not installed. Please install winget first.");
+                Console.WriteLine("You can install winget from the Microsoft Store or by downloading the App Installer package.");
+                Console.WriteLine("\nPress Enter to go back to the main menu...");
+                Console.ReadLine();
+                Menu();
+                return;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Winget is installed. Starting .NET Framework installation...\n");
+            Console.ResetColor();
+            
+            string pwshPath = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
+            string scriptContent = @"
+$dotnetPackages = @(
+    'Microsoft.DotNet.SDK.6',
+    'Microsoft.DotNet.SDK.7',
+    'Microsoft.DotNet.SDK.8',
+    'Microsoft.DotNet.Runtime.6',
+    'Microsoft.DotNet.Runtime.7',
+    'Microsoft.DotNet.Runtime.8',
+)
+
+foreach ($pkg in $dotnetPackages) {
+    Write-Host ""Checking $pkg..."" -ForegroundColor Cyan
+    $installed = winget list --id $pkg --source winget 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host ""$pkg is already installed"" -ForegroundColor Green
+        continue
+    }
+    
+    Write-Host ""Installing $pkg..."" -ForegroundColor Yellow
+    $result = winget install --id $pkg --source winget --accept-package-agreements --accept-source-agreements 2>&1
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host ""$pkg installed successfully"" -ForegroundColor Green
+    } else {
+        Write-Host ""Failed to install $pkg"" -ForegroundColor Red
+        Write-Host $result -ForegroundColor Red
+    }
+}";
+
+            try
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    FileName = pwshPath,
+                    Arguments = $"-ExecutionPolicy Bypass -Command \"{scriptContent}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (Process process = Process.Start(processStartInfo))
+                {
+                    using (var reader = process.StandardOutput)
+                    {
+                        string result = reader.ReadToEnd();
+                        Console.WriteLine(result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error running PowerShell script: " + ex.Message);
+                Console.ResetColor();
+            }
+
+            Console.WriteLine("\nPress Enter to go back to the main menu...");
+            Console.ReadLine();
+            Menu();
+        }
+
 
         static void EchoJournal()
         {
