@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build, Test and Release
 
 on:
   push:
@@ -25,4 +25,38 @@ jobs:
       run: dotnet build "Detect AC.sln" --configuration Release --no-restore
       
     - name: Test
-      run: dotnet test "Detect AC.sln" --no-build --configuration Release 
+      run: dotnet test "Detect AC.sln" --no-build --configuration Release
+      
+    - name: Publish
+      run: dotnet publish "Detect AC.sln" -c Release -o publish --no-build
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: PC-Check-Tool
+        path: publish/
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: PC-Check-Tool
+        
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Release v${{ github.sha }}
+        tag_name: v${{ github.sha }}
+        body: |
+          Automated release of PC Check & Screen Sharing Tool
+          - Built from commit: ${{ github.sha }}
+          - Date: ${{ github.event.head_commit.timestamp }}
+        draft: false
+        prerelease: false
+        generate_release_notes: true 
