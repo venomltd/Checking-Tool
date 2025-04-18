@@ -8,7 +8,7 @@ using System.Reflection;
 using Microsoft.Win32;
 using static System.Net.WebRequestMethods;
 using System.Net.Http;
-
+using System.Security.Principal;
 
 namespace Detect_AC
 {
@@ -20,7 +20,7 @@ namespace Detect_AC
             Console.ForegroundColor = ConsoleColor.Cyan;
             Banner();
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Menu();
+            CheckIsRunningAsAdmin();
         }
 
         static void Banner()
@@ -28,7 +28,7 @@ namespace Detect_AC
             Console.Clear();
             Console.WriteLine(@"
  ________  _______  _________  _______   ________ _________    ________  ________     
-|\   ___ \|\  ___ \|\___   ___\\  ___ \ |\   ____\\___   ___\ |\   __  \|\   ____\    
+|\   ___ \|\  ___ \|\___   ___\\  ___ \ |\   ____\|___   ___\ |\   __  \|\   ____\    
 \ \  \_|\ \ \   __/\|___ \  \_\ \   __/|\ \  \___\|___ \  \_| \ \  \|\  \ \  \___|    
  \ \  \ \\ \ \  \_|/__  \ \  \ \ \  \_|/_\ \  \       \ \  \   \ \   __  \ \  \       
   \ \  \_\\ \ \  \_|\ \  \ \  \ \ \  \_|\ \ \  \____   \ \  \ __\ \  \ \  \ \  \____  
@@ -36,6 +36,48 @@ namespace Detect_AC
     \|_______|\|_______|   \|__|  \|_______|\|_______|   \|__\|__|\|__|\|__|\|_______|
 
 ");
+        }
+
+        static void CheckIsRunningAsAdmin()
+        {
+            if (!IsAdministrator())
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Warning: This program is not running with administrator privileges.");
+                Console.WriteLine("Some tools and PowerShell scripts may not work correctly without admin access.");
+                Console.WriteLine("\nAvailable without admin privileges:");
+                Console.WriteLine("- Downloading tools");
+                Console.WriteLine("- Basic system checks");
+                Console.WriteLine("\nMay not work without admin privileges:");
+                Console.WriteLine("- PowerShell scripts");
+                Console.WriteLine("- Registry checks");
+                Console.WriteLine("- Service management");
+                Console.WriteLine("- System diagnostics");
+                Console.ResetColor();
+
+                Console.WriteLine("\nDo you want to continue without admin privileges? (y/n)");
+                string input = Console.ReadLine().ToLower();
+                if (input != "y")
+                {
+                    Environment.Exit(0);
+                }
+            }
+            Menu();
+        }
+
+        static void RestartAsAdmin()
+        {
+            // This method is no longer used but kept for reference
+            Console.WriteLine("This program must be run as an administrator! Please restart with admin privileges.");
+        }
+
+        static bool IsAdministrator()
+        {
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            {
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
         }
 
         static void Menu()
@@ -234,7 +276,6 @@ foreach ($pkg in $dotnetPackages) {
             Menu();
         }
 
-
         static void EchoJournal()
         {
             Console.Clear();
@@ -258,7 +299,6 @@ foreach ($pkg in $dotnetPackages) {
             }
             Thread.Sleep(2000);
             Menu();
-
         }
         
         static void JournalTrace()
@@ -296,7 +336,6 @@ foreach ($pkg in $dotnetPackages) {
             List<(string url, string filename)> filesToDownload = new List<(string, string)>
             {
                 ("https://win.cleverfiles.com/disk-drill-win.exe?_gl=1*1370lef*_gcl_aw*R0NMLjE3NDE3MzIwMDEuQ2p3S0NBand2ci0tQmhCNUVpd0FkNVliWGdNaWVxSWdNTVBUV2tHOUVoS0xpTDNENzBIWjVBZDlQSnNyY0VnX1VLQWdHV3NzaXFWNTVCb0NzQU1RQXZEX0J3RQ..*_gcl_au*MTE0ODc0NDE0Mi4xNzM4Nzc0OTE0*_ga*ODI1NTAxMzc5LjE3Mzg3NzQ5MTQ.*_ga_0YKQ5NLM26*MTc0MTczMTk5NS4yLjEuMTc0MTczMjAxNi4zOS4wLjA.", "DiskDrill.exe"),
-
             };
 
             WebClient client = new WebClient();
@@ -336,9 +375,6 @@ foreach ($pkg in $dotnetPackages) {
             Thread.Sleep(2000);
             Menu();
         }
-
-
-
 
         static void NirSoftTools()
         {
@@ -389,9 +425,7 @@ foreach ($pkg in $dotnetPackages) {
                     Menu();
                     break;
             }
-
         }
-
 
         static void niralt()
         {
@@ -403,7 +437,6 @@ foreach ($pkg in $dotnetPackages) {
             List<(string url, string filename)> filesToDownload = new List<(string, string)>
             {
                 ("https://www.nirsoft.net/utils/alternatestreamview-x64.zip", "AlternateStreamView.zip"),
-
             };
 
             WebClient client = new WebClient();
@@ -429,7 +462,6 @@ foreach ($pkg in $dotnetPackages) {
             List<(string url, string filename)> filesToDownload = new List<(string, string)>
             {
                 ("https://www.nirsoft.net/utils/taskschedulerview-x64.zip", "TaskSchedulerView.zip"),
-
             };
 
             WebClient client = new WebClient();
@@ -470,7 +502,6 @@ foreach ($pkg in $dotnetPackages) {
             Menu();
         }
 
-
         static void nirwinpr()
         {
             Console.Clear();
@@ -481,8 +512,7 @@ foreach ($pkg in $dotnetPackages) {
             List<(string url, string filename)> filesToDownload = new List<(string, string)>
     {
         ("https://www.nirsoft.net/utils/winprefetchview-x64.zip", "NirSoft-WinPrefetchView.zip"),
-
-};
+    };
 
             WebClient client = new WebClient();
 
@@ -601,7 +631,6 @@ foreach ($pkg in $dotnetPackages) {
             }
             Thread.Sleep(2000);
             Menu();
-
         }
 
         static void sysinfo()
@@ -628,7 +657,6 @@ foreach ($pkg in $dotnetPackages) {
             Thread.Sleep(2000);
             Menu();
         }
-
 
         static void Hayabusa()
         {
@@ -718,8 +746,6 @@ foreach ($pkg in $dotnetPackages) {
                     Menu();
                     break;
             }
-
-
         }
 
         static void detbam()
@@ -770,7 +796,6 @@ foreach ($pkg in $dotnetPackages) {
             }
             Thread.Sleep(2000);
             Menu();
-
         }
 
         static void detpca()
@@ -796,7 +821,6 @@ foreach ($pkg in $dotnetPackages) {
             }
             Thread.Sleep(2000);
             Menu();
-
         }
 
         static void detpro()
@@ -822,7 +846,6 @@ foreach ($pkg in $dotnetPackages) {
             }
             Thread.Sleep(2000);
             Menu();
-
         }
 
         static void detall()
@@ -852,7 +875,6 @@ foreach ($pkg in $dotnetPackages) {
             Thread.Sleep(2000);
             Menu();
         }
-
 
         static void FTKImager()
         {
@@ -933,7 +955,6 @@ foreach ($pkg in $dotnetPackages) {
                     Menu();
                     break;
             }
-
         }
 
         static void eram()
@@ -1124,7 +1145,6 @@ foreach ($pkg in $dotnetPackages) {
         ("https://download.ericzimmermanstools.com/net9/SrumECmd.zip", "SrumECmd.zip"),
         ("https://download.ericzimmermanstools.com/net9/RegistryExplorer.zip", "RegistryExplorer.zip"),
         ("https://download.ericzimmermanstools.com/net9/MFTECmd.zip", "MFTECmd.zip")
-
     };
 
             WebClient client = new WebClient();
@@ -1138,9 +1158,7 @@ foreach ($pkg in $dotnetPackages) {
             }
             Thread.Sleep(2000);
             Menu();
-
         }
-
 
         static void USBCheck()
         {
@@ -1188,8 +1206,6 @@ foreach ($pkg in $dotnetPackages) {
             {
                 return true;
             }
-
-
         }
 
         static void PowerShellScripts()
@@ -1226,7 +1242,6 @@ foreach ($pkg in $dotnetPackages) {
                     Menu();
                     break;
             }
-
         }
         static void powser()
         {
@@ -1235,11 +1250,8 @@ foreach ($pkg in $dotnetPackages) {
             Console.ForegroundColor = ConsoleColor.Green;
             string pwshPath = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
 
-
             string scriptContent = @"
-
 $findstrPath = 'C:\Windows\System32\findstr.exe'
-
 
 get-service | & $findstrPath -i 'pcasvc'
 get-service | & $findstrPath -i 'DPS'
@@ -1250,7 +1262,6 @@ get-service | & $findstrPath -i 'sgrmbroker'
 get-service | & $findstrPath -i 'cdpusersvc'
 ";
 
-
             RunPowerShellScript(pwshPath, scriptContent);
         }
 
@@ -1258,7 +1269,6 @@ get-service | & $findstrPath -i 'cdpusersvc'
         {
             try
             {
-
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
                 {
                     FileName = pwshPath,
@@ -1270,7 +1280,6 @@ get-service | & $findstrPath -i 'cdpusersvc'
 
                 using (Process process = Process.Start(processStartInfo))
                 {
-
                     using (var reader = process.StandardOutput)
                     {
                         string result = reader.ReadToEnd();
@@ -1284,21 +1293,14 @@ get-service | & $findstrPath -i 'cdpusersvc'
             }
             Thread.Sleep(Timeout.Infinite);
             Menu();
-
-
-
         }
-
-
 
         static void powbam()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Blue;
 
-
             string pwshPath = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
-
 
             string scriptContent = @"
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
@@ -1307,7 +1309,6 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/PureIntent/ScreenShare/main/RedLotusBam.ps1)
 ";
 
-
             RunPowerShellScrit(pwshPath, scriptContent);
         }
 
@@ -1315,7 +1316,6 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/PureInten
         {
             try
             {
-
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
                 {
                     FileName = pwshPath,
@@ -1325,10 +1325,8 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/PureInten
                     CreateNoWindow = true
                 };
 
-
                 using (Process process = Process.Start(processStartInfo))
                 {
-
                     using (var reader = process.StandardOutput)
                     {
                         string result = reader.ReadToEnd();
@@ -1343,10 +1341,7 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/PureInten
 
             Thread.Sleep(Timeout.Infinite);
 
-
             Menu();
-
-
         }
 
         static void powpath()
@@ -1354,9 +1349,7 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/PureInten
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
 
-
             string pwshPath = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
-
 
             string scriptContent = @"
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
@@ -1364,7 +1357,6 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 # Invoke the script from the URL
 Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicua/Screenshare/main/RedLotusSignatures.ps1)
 ";
-
 
             RunPowerShellScr(pwshPath, scriptContent);
         }
@@ -1373,7 +1365,6 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicu
         {
             try
             {
-
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
                 {
                     FileName = pwshPath,
@@ -1383,10 +1374,8 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicu
                     CreateNoWindow = true
                 };
 
-
                 using (Process process = Process.Start(processStartInfo))
                 {
-
                     using (var reader = process.StandardOutput)
                     {
                         string result = reader.ReadToEnd();
@@ -1399,12 +1388,9 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicu
                 Console.WriteLine("Error running PowerShell script: " + ex.Message);
             }
 
-
             Thread.Sleep(Timeout.Infinite);
 
-
             Menu();
-
         }
 
         static void powdisk()
@@ -1412,9 +1398,7 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicu
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
 
-
             string pwshPath = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
-
 
             string scriptContent = @"
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
@@ -1423,7 +1407,6 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicua/Screenshare/main/RedLotusSignatures.ps1)
 ";
 
-
             RunPowerShellSc(pwshPath, scriptContent);
         }
 
@@ -1431,7 +1414,6 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicu
         {
             try
             {
-
                 ProcessStartInfo processStartInfo = new ProcessStartInfo
                 {
                     FileName = pwshPath,
@@ -1441,10 +1423,8 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicu
                     CreateNoWindow = true
                 };
 
-
                 using (Process process = Process.Start(processStartInfo))
                 {
-
                     using (var reader = process.StandardOutput)
                     {
                         string result = reader.ReadToEnd();
@@ -1459,7 +1439,6 @@ Invoke-Expression (Invoke-RestMethod https://raw.githubusercontent.com/bacanoicu
 
             Thread.Sleep(Timeout.Infinite);
             Menu();
-
         }
     }
 }        

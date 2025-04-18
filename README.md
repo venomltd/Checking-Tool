@@ -1,5 +1,7 @@
 # PC Check & Screen Sharing Tool
 
+![Build Status](https://github.com/venomltd/Checking-Tool/actions/workflows/build.yml/badge.svg)
+
 This tool is a comprehensive suite designed to automatically download and set up essential tools for performing **PC checks**, system forensics, and screen sharing. 
 
 
@@ -53,37 +55,6 @@ The following diagnostic, forensics, and screen sharing tools are included in th
   - **AnyDesk**
   - **Teamviewer**
   - **RUSTDESK**
-
-## Installation
-
-1. **Download the Tool**:
-   - Download the latest release from the [releases page](https://github.com/thcjackk/Checking-Tool/releases/).
-   
-2. **Run the Setup**:
-   - Execute the setup file to install the PC Check & Screen Sharing Tool on your system.
-   
-3. **Launch the Tool**:
-   - Open the application from the Start Menu (Windows) or Applications folder (macOS).
-
-4. **Choose Your Toolset**:
-   - Select from diagnostic tools, forensics tools, or screen sharing configuration based on your needs.
-
-
-## Usage
-
-- **System Forensics & Diagnostics**:
-- Select the tools you need to perform system analysis or check your PC.
-- Some tools may require administrative privileges to function properly.
-
-
-- **PowerShell Scripts**:
-  - You can run the included PowerShell scripts directly from the tool interface or manually via PowerShell.
-  - Some scripts may require elevated privileges to execute.
-
-- **Screen Sharing Setup**:
-  - Choose your preferred screen-sharing software setup.
-  - The tool will guide you through the installation and configuration steps.
-
 
 ## Support
 
