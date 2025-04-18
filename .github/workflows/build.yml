@@ -31,7 +31,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: PC-Check-Tool
-        path: publish/
+        path: publish/Detect AC.exe
 
   release:
     needs: build
@@ -54,6 +54,9 @@ jobs:
           Automated release of PC Check & Screen Sharing Tool
           - Built from commit: ${{ github.sha }}
           - Date: ${{ github.event.head_commit.timestamp }}
+          
+          ## Included Files
+          - Detect AC.exe
         draft: false
         prerelease: false
         generate_release_notes: true 
