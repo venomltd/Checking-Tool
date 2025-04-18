@@ -65,12 +65,6 @@ namespace Detect_AC
             Menu();
         }
 
-        static void RestartAsAdmin()
-        {
-            // This method is no longer used but kept for reference
-            Console.WriteLine("This program must be run as an administrator! Please restart with admin privileges.");
-        }
-
         static bool IsAdministrator()
         {
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
