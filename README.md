@@ -1,7 +1,7 @@
 # PC Check & Screen Sharing Tool
 
 ![Build Status](https://github.com/thcjackk/Checking-Tool/actions/workflows/build.yml/badge.svg)
-[![Latest Release](https://img.shields.io/github/v/release/thcjackk/Checking-Tool?label=Download%20Latest%20Release&style=for-the-badge)](https://github.com/venomltd/Checking-Tool/releases/latest/download/Detect%20AC.exe)
+[![Latest Release](https://img.shields.io/github/v/release/thcjackk/Checking-Tool?label=Download%20Latest%20Release&style=for-the-badge)](https://github.com/thcjackk/Checking-Tool/releases/latest/download/Detect%20AC.exe)
 
 This tool is a comprehensive suite designed to automatically download and set up essential tools for performing **PC checks**, system forensics, and screen sharing. 
 
